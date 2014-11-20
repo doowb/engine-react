@@ -14,6 +14,14 @@
 var react = require('react');
 var transform = require('react-tools').transform;
 
+var loadPartials = function (options) {
+  options = options || {};
+  if (!options.partials) return '';
+  options.partials = [].concat.call([], options.partials);
+  if (options.partials.length === 0) return '';
+  return options.partials.join('\n\n');
+};
+
 var engine = {
  
   /**
@@ -56,8 +64,9 @@ var engine = {
    */
   
   renderSync: function (str, options) {
-    var component = eval(transform(str));
-    return react.renderToString(component(options));
+    str = [loadPartials(options), str].join('\n\n');
+    var component = react.createFactory(eval(transform(str)));
+    return react.renderToStaticMarkup(component(options));
   },
 
   /**
