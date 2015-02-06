@@ -26,7 +26,7 @@ var wrap = function (name, src) {
 
 var engine = {
 
-  compile: function (str, options, cb) {
+  compile: function reactCompile (str, options) {
     options = options || {};
 
     var partials = options.partials || {};
@@ -43,27 +43,26 @@ var engine = {
       ].join('\n\n');
 
       var Element = React.createFactory(eval(transform(str)));
-      return cb(null, Element);
+      return function renderElement (ctx) {
+        var element = Element(ctx);
+        var content = React.renderToStaticMarkup(element);
+        return content;
+      };
     } catch (err) {
-      return cb(err);
+      throw new Error(err);
     }
   },
 
-  render: function (fn, ctx, cb) {
+  render: function reactRender (fn, ctx, cb) {
     if (typeof fn !== 'function') {
-      return this.compile(fn, ctx, function (err, fn) {
-        if (err) return cb(err);
-        try {
-          var content = React.renderToStaticMarkup(fn(ctx));
-          return cb(null, content);
-        } catch (err) {
-          return cb(err);
-        }
-      });
+      try {
+        var fn = this.compile(fn, ctx);
+      } catch (err) {
+        return cb(err);
+      }
     }
-
     try {
-      var content = React.renderToStaticMarkup(fn(ctx));
+      var content = fn(ctx);
       return cb(null, content);
     } catch (err) {
       return cb(err);

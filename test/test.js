@@ -11,22 +11,58 @@ var fs = require('fs');
 var path = require('path');
 var should = require('should');
 var engine = require('..');
-var react = require('react');
-var transform = require('react-tools').transform;
+var Template = require('template');
+var handlebars = require('engine-handlebars');
 
-var ctx = {
-  partials: {
-    Comment: fs.readFileSync('./test/fixtures/Comment.jsx', 'utf8'),
-    CommentForm: fs.readFileSync('./test/fixtures/CommentForm.jsx', 'utf8'),
-    CommentList: fs.readFileSync('./test/fixtures/CommentList.jsx', 'utf8')
-  }
-};
-
-engine.render(fs.readFileSync('./test/fixtures/CommentBox.jsx', 'utf8'), ctx, function (err, content) {
-  if (err) return console.log('error', err);
-  console.log('done');
-  console.log('content', content.toString());
+var template = new Template();
+template.option('layout', 'layout');
+template.option('renameKey', function (fp) {
+  return path.basename(fp, path.extname(fp));
 });
+
+template.engine('.hbs', handlebars);
+template.engine('.jsx', engine);
+
+template.create('component', { isRenderable: true });
+template.asyncHelper('component', function (name, ctx, options, next) {
+    if (typeof next !== 'function') {
+      next = options;
+      options = ctx;
+      ctx = {};
+    }
+    var app = this.app;
+    var context = this.context;
+    var component = app.findRenderable(name, ['components']);
+    if (!component) {
+      console.log('can not find', name, 'component');
+      return next(null, '');
+    }
+    component.render(context, next);
+});
+
+template.layouts('test/fixtures/layout.hbs');
+template.pages('test/fixtures/page.hbs');
+template.partials(['test/fixtures/*.jsx', '!test/fixtures/CommentBox.jsx'], {});
+template.components('test/fixtures/*.jsx');
+
+template.render('page', { title: "Render React" }, function (err, contents) {
+  if (err) return console.log(err);
+  fs.writeFileSync('index.html', contents);
+});
+
+// var ctx = {
+//   partials: {
+//     Comment: fs.readFileSync('./test/fixtures/Comment.jsx', 'utf8'),
+//     CommentForm: fs.readFileSync('./test/fixtures/CommentForm.jsx', 'utf8'),
+//     CommentList: fs.readFileSync('./test/fixtures/CommentList.jsx', 'utf8')
+//   }
+// };
+
+// engine.render(fs.readFileSync('./test/fixtures/CommentBox.jsx', 'utf8'), ctx, function (err, content) {
+//   if (err) return console.log('error', err);
+//   console.log('done');
+//   console.log('content', content.toString());
+// });
 
 // describe('.renderSync()', function () {
 //   it('should render templates.', function () {
