@@ -4,7 +4,7 @@ var CommentBox = React.createClass({
     return (
       <div className="commentBox">
         <h1>Comments</h1>
-        <CommentList />
+        <CommentList first={this.props.first} />
         <CommentForm />
       </div>
     );

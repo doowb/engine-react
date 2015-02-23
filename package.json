@@ -28,10 +28,10 @@
     "test": "mocha -R spec"
   },
   "devDependencies": {
-    "engine-handlebars": "^0.4.1",
+    "engine-handlebars": "^0.6.1",
     "mocha": "*",
     "should": "^4.3.0",
-    "template": "^0.6.2"
+    "template": "^0.10.1"
   },
   "keywords": [
     "docs",

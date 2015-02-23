@@ -1,3 +1,4 @@
+
 var CommentForm = React.createClass({
   render: function() {
     return (
@@ -7,3 +8,5 @@ var CommentForm = React.createClass({
     );
   }
 });
+
+module.exports = CommentForm;

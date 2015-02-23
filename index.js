@@ -17,10 +17,11 @@ var transform = ReactTools.transform;
 
 var wrap = function (name, src) {
   return [
-    'var ' + name + ' = (function () {',
+    'var ' + name + 'Module = { exports: {} };',
+    '(function (module) {',
     '  ' + src,
-    '  return ' + name + ';',
-    '})();'
+    '})(' + name + 'Module);',
+    'var ' + name + ' = ' + name + 'Module.exports;'
   ].join('\n');
 }
 
@@ -28,6 +29,7 @@ var engine = {
 
   compile: function reactCompile (str, options) {
     options = options || {};
+    options.static = options.static || false;
 
     var partials = options.partials || {};
     try {
@@ -44,12 +46,21 @@ var engine = {
 
       var Element = React.createFactory(eval(transform(str)));
       return function renderElement (ctx) {
-        var element = Element(ctx);
-        var content = React.renderToStaticMarkup(element);
-        return content;
+        try {
+          var element = Element(ctx);
+          var content = '';
+          if (options.static) {
+            content = React.renderToStaticMarkup(element);
+          } else {
+            content = React.renderToString(element);
+          }
+          return content;
+        } catch (err) {
+          throw err;
+        }
       };
     } catch (err) {
-      throw new Error(err);
+      throw err;
     }
   },
 
