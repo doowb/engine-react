@@ -48,15 +48,15 @@ template.asyncHelper('component', function (name, ctx, options, next) {
     component.render(context, next);
 });
 
-template.helper('deps', function () {
-  var app = this.app;
-  var deps = app.views.partials;
-  deps = Object.keys(deps).map(function (dep) {
-    return transform(deps[dep].content);
-  }).join('\n\n');
+// template.helper('deps', function () {
+//   var app = this.app;
+//   var deps = app.views.partials;
+//   deps = Object.keys(deps).map(function (dep) {
+//     return transform(deps[dep].content);
+//   }).join('\n\n');
 
-  return new handlebars.Handlebars.SafeString(deps);
-});
+//   return new handlebars.Handlebars.SafeString(deps);
+// });
 
 template.helper('app', function (name) {
   var app = this.app;
@@ -72,8 +72,8 @@ template.layouts(dirname('fixtures/layouts/*.hbs'));
 template.pages(dirname('fixtures/pages/*.hbs'));
 
 // add react templates used in the client-side app
-template.partials([dirname('fixtures/apps/**/*.jsx'), '!' + dirname('fixtures/apps/**/*App.jsx')], {});
-template.components(dirname('fixtures/**/*App.jsx'));
+// template.partials([dirname('fixtures/apps/**/*.jsx'), '!' + dirname('fixtures/apps/**/*App.jsx')], {});
+template.components(dirname('fixtures/apps/*.jsx'));
 
 template.render('app', function (err, contents) {
   if (err) return console.log(err);

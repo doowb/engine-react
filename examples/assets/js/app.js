@@ -2,36 +2,23 @@ var module = {
   exports: {}
 };
 
+
+var Remarkable = require('remarkable');
+var md = new Remarkable();
+
 var Comment = React.createClass({displayName: "Comment",
   render: function() {
+    var rawMarkup = md.render(this.props.children.toString());
     return (
       React.createElement("div", {className: "comment"}, 
         React.createElement("h2", {className: "commentAuthor"}, 
           this.props.author
         ), 
-        this.props.children
+        React.createElement("span", {dangerouslySetInnerHtml: {__html: rawMarkup}})
       )
     );
   }
 });
-
-module.exports = Comment;
-
-
-var CommentBox = React.createClass({displayName: "CommentBox",
-  render: function() {
-    return (
-      React.createElement("div", {className: "commentBox"}, 
-        React.createElement("h1", null, "Comments"), 
-        React.createElement(CommentList, {first: this.props.first}), 
-        React.createElement(CommentForm, null)
-      )
-    );
-  }
-});
-
-module.exports = CommentBox;
-
 
 var CommentForm = React.createClass({displayName: "CommentForm",
   render: function() {
@@ -42,8 +29,6 @@ var CommentForm = React.createClass({displayName: "CommentForm",
     );
   }
 });
-
-module.exports = CommentForm;
 
 
 var CommentList = React.createClass({displayName: "CommentList",
@@ -57,10 +42,19 @@ var CommentList = React.createClass({displayName: "CommentList",
   }
 });
 
-module.exports = CommentList;
+var CommentBox = React.createClass({displayName: "CommentBox",
+  render: function() {
+    return (
+      React.createElement("div", {className: "commentBox"}, 
+        React.createElement("h1", null, "Comments"), 
+        React.createElement(CommentList, {first: this.props.first}), 
+        React.createElement(CommentForm, null)
+      )
+    );
+  }
+});
 
-
-var CommentsApp = React.createClass({displayName: "CommentsApp",
+var Comments = React.createClass({displayName: "Comments",
   render: function() {
     return (
       React.createElement("div", {className: "comments"}, 
@@ -70,7 +64,7 @@ var CommentsApp = React.createClass({displayName: "CommentsApp",
   }
 });
 
-module.exports = CommentsApp;
+module.exports = Comments;
 
 
-React.render(CommentsApp({ first: 'Pete Hunt' }), document.getElementById('app'));
+React.render(Comments({ first: 'Pete Hunt' }), document.getElementById('app'));

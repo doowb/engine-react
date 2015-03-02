@@ -30,6 +30,7 @@
   "devDependencies": {
     "engine-handlebars": "^0.6.1",
     "mocha": "*",
+    "remarkable": "^1.6.0",
     "should": "^4.3.0",
     "template": "^0.10.1"
   },
