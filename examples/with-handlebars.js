@@ -66,15 +66,14 @@ template.helper('app', function (name) {
 });
 
 // add handlebars layouts
-template.layouts(dirname('fixtures/default.hbs'));
+template.layouts(dirname('fixtures/layouts/*.hbs'));
 
 // add handlebars pages
-template.pages(dirname('fixtures/index.hbs'));
-template.pages(dirname('fixtures/app.hbs'));
+template.pages(dirname('fixtures/pages/*.hbs'));
 
 // add react templates used in the client-side app
-template.partials([dirname('fixtures/*.jsx'), '!' + dirname('fixtures/App.jsx')], {});
-template.components(dirname('fixtures/App.jsx'));
+template.partials([dirname('fixtures/apps/**/*.jsx'), '!' + dirname('fixtures/apps/**/*App.jsx')], {});
+template.components(dirname('fixtures/**/*App.jsx'));
 
 template.render('app', function (err, contents) {
   if (err) return console.log(err);

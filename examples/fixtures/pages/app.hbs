@@ -1,0 +1,9 @@
+var module = {
+  exports: {}
+};
+
+{{deps}}
+
+{{app "CommentsApp"}}
+
+React.render(CommentsApp({ first: 'Pete Hunt' }), document.getElementById('app'));

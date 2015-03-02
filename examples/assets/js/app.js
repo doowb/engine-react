@@ -60,17 +60,17 @@ var CommentList = React.createClass({displayName: "CommentList",
 module.exports = CommentList;
 
 
-var App = React.createClass({displayName: "App",
+var CommentsApp = React.createClass({displayName: "CommentsApp",
   render: function() {
     return (
-      React.createElement("div", {className: "app"}, 
+      React.createElement("div", {className: "comments"}, 
         React.createElement(CommentBox, {first: this.props.first})
       )
     );
   }
 });
 
-module.exports = App;
+module.exports = CommentsApp;
 
 
-React.render(App({ first: 'Pete Hunt' }), document.getElementById('app'));
+React.render(CommentsApp({ first: 'Pete Hunt' }), document.getElementById('app'));

@@ -1,12 +1,12 @@
 
-var App = React.createClass({
+var CommentsApp = React.createClass({
   render: function() {
     return (
-      <div className="app">
+      <div className="comments">
         <CommentBox first={this.props.first}/>
       </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = CommentsApp;
