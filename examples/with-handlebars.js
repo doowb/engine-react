@@ -10,11 +10,16 @@
 var fs = require('fs');
 var path = require('path');
 var should = require('should');
-var engine = require('..');
 var Template = require('template');
-var handlebars = require('engine-handlebars');
+var extend = require('extend-shallow');
 var ReactTools = require('react-tools');
+var handlebars = require('engine-handlebars');
+var browserify = require('browserify');
+var reactify = require('reactify');
+
+
 var transform = ReactTools.transform;
+var engine = require('..');
 
 var dirname = path.join.bind(path, __dirname);
 
@@ -23,6 +28,18 @@ var template = new Template();
 template.option('renameKey', function (fp) {
   return path.basename(fp, path.extname(fp));
 });
+
+var data = {};
+var comments = require('./data/comments.json');
+data.comments = {
+  list: comments,
+  pollInterval: 2000
+};
+
+data.users = {
+  list: comments,
+  pollInterval: 3000
+};
 
 // add the engines for the specific extensions
 template.engine('.hbs', handlebars);
@@ -45,24 +62,9 @@ template.asyncHelper('component', function (name, ctx, options, next) {
     }
     context.options = context.options || {};
     context.options.layout = false;
+
+    context = extend({}, context, ctx, options.hash);
     component.render(context, next);
-});
-
-// template.helper('deps', function () {
-//   var app = this.app;
-//   var deps = app.views.partials;
-//   deps = Object.keys(deps).map(function (dep) {
-//     return transform(deps[dep].content);
-//   }).join('\n\n');
-
-//   return new handlebars.Handlebars.SafeString(deps);
-// });
-
-template.helper('app', function (name) {
-  var app = this.app;
-  var App = app.findRenderable(name, ['components']);
-  var output = transform(App.content);
-  return new handlebars.Handlebars.SafeString(output);
 });
 
 // add handlebars layouts
@@ -75,12 +77,20 @@ template.pages(dirname('fixtures/pages/*.hbs'));
 // template.partials([dirname('fixtures/apps/**/*.jsx'), '!' + dirname('fixtures/apps/**/*App.jsx')], {});
 template.components(dirname('fixtures/apps/*.jsx'));
 
-template.render('app', function (err, contents) {
-  if (err) return console.log(err);
-  fs.writeFileSync(dirname('assets/js/app.js'), contents);
-});
+// template.render('app', function (err, contents) {
+//   if (err) return console.log(err);
+//   fs.writeFileSync(dirname('assets/js/app.js'), contents);
+// });
 
-template.render('index', { title: "Render React", first: "Brian Woodward", options: { layout: 'default' } }, function (err, contents) {
+browserify('./main.js', { basedir: path.join(__dirname, 'fixtures/apps'), debug: true })
+  .transform(reactify)
+  .bundle(function (err, results) {
+    if (err) return console.log('Bundle Error:', err);
+    console.log('results', results);
+    fs.writeFileSync(dirname('assets/js/app.js'), results);
+  });
+
+template.render('index', extend({}, data, {options: { layout: 'default', static: false }}), function (err, contents) {
   if (err) return console.log(err);
   fs.writeFileSync(dirname('index.html'), contents);
 });

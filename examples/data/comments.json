@@ -1,0 +1,4 @@
+[
+  { "key": "Pete", "author": "Pete Hunt", "text": "This is one comment" },
+  { "key": "Jordan", "author": "Jordan Walke", "text": "This is *another* comment" }
+]

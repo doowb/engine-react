@@ -3,6 +3,20 @@
 <br><br><br>
 <hr>
 <br><br><br>
-<div id="app">
-  {{component "Comments"}}
+
+<div>
+<table width="100%">
+  <tr>
+    <td>
+      <div id="app1">
+        {{component "Comments" data=comments.list pollInterval=comments.pollInterval}}
+      </div>
+    </td>
+    <td>
+      <div id="app2">
+        {{component "UserStatusBox" data=users.list pollInterval=users.pollInterval}}
+      </div>
+    </td>
+  </tr>
+</table>
 </div>
