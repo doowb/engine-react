@@ -9,18 +9,14 @@
 
 var fs = require('fs');
 var path = require('path');
-var should = require('should');
 var Template = require('template');
 var extend = require('extend-shallow');
-var ReactTools = require('react-tools');
 var handlebars = require('engine-handlebars');
 var browserify = require('browserify');
 var reactify = require('reactify');
 
 
-var transform = ReactTools.transform;
 var engine = require('..');
-
 var dirname = path.join.bind(path, __dirname);
 
 // setup `template`
@@ -77,19 +73,15 @@ template.pages(dirname('fixtures/pages/*.hbs'));
 // template.partials([dirname('fixtures/apps/**/*.jsx'), '!' + dirname('fixtures/apps/**/*App.jsx')], {});
 template.components(dirname('fixtures/apps/*.jsx'));
 
-// template.render('app', function (err, contents) {
-//   if (err) return console.log(err);
-//   fs.writeFileSync(dirname('assets/js/app.js'), contents);
-// });
-
+// browserify the client-side app
 browserify('./main.js', { basedir: path.join(__dirname, 'fixtures/apps'), debug: true })
   .transform(reactify)
   .bundle(function (err, results) {
     if (err) return console.log('Bundle Error:', err);
-    console.log('results', results);
     fs.writeFileSync(dirname('assets/js/app.js'), results);
   });
 
+// render the server-side html
 template.render('index', extend({}, data, {options: { layout: 'default', static: false }}), function (err, contents) {
   if (err) return console.log(err);
   fs.writeFileSync(dirname('index.html'), contents);

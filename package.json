@@ -32,12 +32,9 @@
     "engine-handlebars": "^0.6.1",
     "extend-shallow": "^1.1.2",
     "merge-deep": "^1.0.1",
-    "mocha": "*",
     "reactify": "^1.0.0",
     "remarkable": "^1.6.0",
-    "restify": "^2.8.5",
-    "should": "^4.3.0",
-    "template": "^0.10.1"
+    "template": "^0.10.2"
   },
   "keywords": [
     "docs",
@@ -49,7 +46,7 @@
     "verb"
   ],
   "dependencies": {
-    "react": "^0.12.1",
-    "react-tools": "^0.12.1"
+    "react": "^0.12.2",
+    "react-tools": "^0.12.2"
   }
 }
