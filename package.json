@@ -14,18 +14,23 @@
   "bugs": {
     "url": "https://github.com/doowb/engine-react/issues"
   },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/doowb/engine-react/blob/master/LICENSE-MIT"
-    }
+  "license": {
+    "type": "MIT",
+    "url": "https://github.com/doowb/engine-react/blob/master/LICENSE"
+  },
+  "files": [
+    "index.js"
   ],
   "main": "index.js",
   "engines": {
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "mocha -R spec"
+    "test": "mocha"
+  },
+  "dependencies": {
+    "react": "^0.12.2",
+    "react-tools": "^0.12.2"
   },
   "devDependencies": {
     "browserify": "^9.0.3",
@@ -45,9 +50,5 @@
     "markdown",
     "templates",
     "verb"
-  ],
-  "dependencies": {
-    "react": "^0.12.2",
-    "react-tools": "^0.12.2"
-  }
+  ]
 }
