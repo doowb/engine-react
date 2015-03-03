@@ -31,7 +31,7 @@ var engine = {
     options = options || {};
     options.static = options.static || false;
 
-    var partials = options.partials || {};
+    var partials = {}; //options.partials || {};
     try {
       var deps = Object.keys(partials).map(function (key) {
         var partial = partials[key];
