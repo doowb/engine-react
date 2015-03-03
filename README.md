@@ -1,10 +1,11 @@
-# engine-react [![NPM version](https://badge.fury.io/js/engine-react.svg)](http://badge.fury.io/js/engine-react)
+# engine-react [![NPM version](https://badge.fury.io/js/engine-react.svg)](http://badge.fury.io/js/engine-react)  [![Build Status](https://travis-ci.org/doowb/engine-react.svg)](https://travis-ci.org/doowb/engine-react) 
 
 > Template engine for React that can render server side react templates in Template, Assemble, and Verb.
 
-## Install
+## Install with [npm](npmjs.org)
+
 ```bash
-npm i engine-react --save-dev
+npm i engine-react --save
 ```
 
 ## Usage
