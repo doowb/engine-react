@@ -9,12 +9,14 @@
   <tr>
     <td>
       <div id="app1">
-        {{component "Comments" data=comments.list pollInterval=comments.pollInterval}}
+        {{!component "Comments" data=comments.list pollInterval=comments.pollInterval}}
+        {{component "Comments" comments}}
       </div>
     </td>
     <td>
       <div id="app2">
-        {{component "UserStatusBox" data=users.list pollInterval=users.pollInterval}}
+        {{!component "UserStatusBox" data=users.list pollInterval=users.pollInterval}}
+        {{component "UserStatusBox" users}}
       </div>
     </td>
   </tr>
